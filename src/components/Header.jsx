@@ -54,25 +54,31 @@ const PageTitle = styled.h1`
 `;
 
 const HomeButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  background-color: #f5f5f5;
+  background-color: rgba(255, 255, 255, 0.9);
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   
   &:hover {
-    background-color: #e0e0e0;
+    background-color: rgba(255, 255, 255, 1);
     transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
   img {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     opacity: 0.7;
   }
   
@@ -126,7 +132,6 @@ const Header = () => {
         </Logo>
       ) : (
         <>
-          <div style={{ width: '40px' }}></div>
           <PageTitle>
             {getLogoImage() ? (
               <img src={getLogoImage()} alt={getPageTitle()} />
