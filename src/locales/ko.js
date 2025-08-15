@@ -42,7 +42,8 @@ export default {
       friday: '금',
       saturday: '토'
     },
-    emotionIcon: '감정 아이콘'
+    emotionIcon: '감정 아이콘',
+    monthFormat: 'yyyy년 M월'
   },
   insights: {
     todayAnalysis: '오늘의 감정 분석',

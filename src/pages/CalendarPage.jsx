@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addMonths, subMonths } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { ko, enUS } from 'date-fns/locale';
 import { useEmotion } from '../context/EmotionContext';
 import { useLanguage } from '../context/LanguageContext';
 import DayDetail from '../components/DayDetail';
@@ -124,7 +124,7 @@ const DayCell = styled.div`
 
 const CalendarPage = () => {
   const { EMOTION_TYPES, getDayPrimaryEmotion } = useEmotion();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   
@@ -158,13 +158,17 @@ const CalendarPage = () => {
     return emotion ? emotion.color : null;
   };
   
+  // 현재 언어에 따른 로케일 선택
+  const currentLocale = language === 'ko' ? ko : enUS;
+  const monthFormat = t('calendar.monthFormat');
+  
   // 오늘 날짜
   const today = format(new Date(), 'yyyy-MM-dd');
   
   return (
     <CalendarContainer>
       <MonthSelector>
-        <h2>{format(currentMonth, 'yyyy년 M월', { locale: ko })}</h2>
+        <h2>{format(currentMonth, monthFormat, { locale: currentLocale })}</h2>
         <div className="controls">
           <button onClick={handlePrevMonth}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

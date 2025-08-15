@@ -42,7 +42,8 @@ export default {
       friday: 'Fri',
       saturday: 'Sat'
     },
-    emotionIcon: 'Emotion icon'
+    emotionIcon: 'Emotion icon',
+    monthFormat: 'MMMM yyyy'
   },
   insights: {
     todayAnalysis: 'Today\'s Emotion Analysis',
