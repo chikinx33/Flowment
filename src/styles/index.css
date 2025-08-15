@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+:root {
+  /* 감정 색상 */
+  --emotion-joy: #FFD54F; /* 희(H) */
+  --emotion-anger: #EF5350; /* 노(A) */
+  --emotion-sadness: #64B5F6; /* 애(S) */
+  --emotion-pleasure: #B39DDB; /* 락(F) */
+  --emotion-neutral: #9E9E9E; /* 중성(N) */
+  
+  /* 기본 색상 */
+  --background: #FFFFFF;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border: #E0E0E0;
+  --accent: #4A90E2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-primary);
+  background-color: var(--background);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  touch-action: manipulation; /* 더블 탭 줌 방지 */
+  -webkit-tap-highlight-color: transparent; /* 탭 하이라이트 제거 */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 420px) {
+  body {
+    width: 100%;
+  }
+}
