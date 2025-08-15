@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import logoTop1 from '../assets/images/logo top1.png';
 import logoTop2 from '../assets/images/logo top2.png';
+import homeIcon from '../assets/images/home-icon.svg';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -52,9 +53,43 @@ const PageTitle = styled.h1`
   }
 `;
 
+const HomeButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+  }
+  
+  img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+  }
+  
+  &:hover img {
+    opacity: 1;
+  }
+`;
+
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { translations } = useLanguage();
+  
+  // 홈(랜딩페이지)으로 이동하는 함수
+  const handleHomeClick = () => {
+    navigate('/');
+  };
   
   // 현재 경로에 따라 페이지 제목 설정
   const getPageTitle = () => {
@@ -90,13 +125,19 @@ const Header = () => {
           <span>Our moments in flow...</span>
         </Logo>
       ) : (
-        <PageTitle>
-          {getLogoImage() ? (
-            <img src={getLogoImage()} alt={getPageTitle()} />
-          ) : (
-            getPageTitle()
-          )}
-        </PageTitle>
+        <>
+          <div style={{ width: '40px' }}></div>
+          <PageTitle>
+            {getLogoImage() ? (
+              <img src={getLogoImage()} alt={getPageTitle()} />
+            ) : (
+              getPageTitle()
+            )}
+          </PageTitle>
+          <HomeButton onClick={handleHomeClick} title="홈으로 이동">
+            <img src={homeIcon} alt="홈" />
+          </HomeButton>
+        </>
       )}
     </HeaderContainer>
   );
