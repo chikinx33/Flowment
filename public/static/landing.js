@@ -47,7 +47,7 @@
   
   function showFirstTimeMessage() {
     appDiv.innerHTML = `
-      <div class="text-center space-y-6">
+      <div class="my-auto text-center space-y-6">
         <div class="mb-8">
           <img src="/icons/icon-192.png?t=${Date.now()}" alt="Flowment Logo" class="w-32 h-32 mx-auto mb-6 drop-shadow-2xl">
         </div>
