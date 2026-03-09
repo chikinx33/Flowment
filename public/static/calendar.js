@@ -95,134 +95,98 @@
       entriesMap[day] = entry;
     });
     
-    // Calculate emotion statistics for the month
-    const emotionStats = {};
-    entries.forEach(entry => {
-      const emotion = entry.emotion || 'neutral';
-      emotionStats[emotion] = (emotionStats[emotion] || 0) + 1;
-    });
-    
-    // Calculate average mood score
-    const moodScores = entries
-      .map(e => e.mood_score)
-      .filter(s => s !== null && s !== undefined);
-    const avgMood = moodScores.length > 0 
-      ? (moodScores.reduce((a, b) => a + b, 0) / moodScores.length).toFixed(1)
-      : null;
-    
-    // Generate calendar HTML
-    const monthName = new Date(year, month).toLocaleDateString('ko-KR', { month: 'long', year: 'numeric' });
-    
     let html = `
-      <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-10 pb-20 relative">
+        <div class="absolute top-20 left-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
+        
         <!-- Month Navigation -->
-        <section>
-          <div class="flex items-center justify-between mb-6">
-            <button onclick="changeMonth(-1)" class="text-primary hover:bg-primary/10 p-2 rounded-full transition-colors">
-              <span class="material-symbols-outlined">chevron_left</span>
-            </button>
-            <h2 class="text-2xl font-semibold">${monthName}</h2>
-            <button onclick="changeMonth(1)" class="text-primary hover:bg-primary/10 p-2 rounded-full transition-colors">
-              <span class="material-symbols-outlined">chevron_right</span>
-            </button>
+        <section class="flex items-center justify-between px-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-3xl rounded-[2rem] p-4 border border-slate-200/50 dark:border-slate-800/50 shadow-sm">
+          <button onclick="changeMonth(-1)" class="text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-slate-800 p-3 rounded-2xl transition-all duration-300 shadow-sm">
+            <span class="material-symbols-outlined text-xl">chevron_left</span>
+          </button>
+          
+          <div class="text-center">
+            <h2 class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 tracking-[0.2em] uppercase mb-1">${typeof year !== 'undefined' ? year : new Date().getFullYear()}</h2>
+            <h3 class="text-2xl font-serif text-slate-800 dark:text-slate-100 tracking-tight">${new Date(year, month).toLocaleDateString('en-US', { month: 'long' })}</h3>
           </div>
           
-          <!-- Emotion Statistics (V2.0 NEW) -->
-          ${entries.length > 0 ? `
-            <div class="mb-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
-              <div class="flex flex-wrap items-center justify-center gap-3 text-sm">
-                ${Object.entries(emotionStats).map(([emotion, count]) => 
-                  `<span class="flex items-center gap-1">
-                    <span class="text-lg">${emotionEmojis[emotion]}</span>
-                    <span class="text-slate-600 dark:text-slate-400">${count}일</span>
-                  </span>`
-                ).join('')}
-              </div>
-              ${avgMood ? `
-                <div class="text-center mt-2 text-sm text-slate-600 dark:text-slate-400">
-                  평균 기분: <span class="font-bold text-primary">${avgMood}</span>/10 ${'⭐'.repeat(Math.round(parseFloat(avgMood)))}
-                </div>
-              ` : ''}
-            </div>
-          ` : ''}
-          
-          <!-- Calendar Grid -->
-          <div class="grid grid-cols-7 gap-y-4 text-center">
-            ${['일', '월', '화', '수', '목', '금', '토'].map(day => 
-              `<div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">${day}</div>`
+          <button onclick="changeMonth(1)" class="text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:hover:bg-slate-800 p-3 rounded-2xl transition-all duration-300 shadow-sm">
+            <span class="material-symbols-outlined text-xl">chevron_right</span>
+          </button>
+        </section>
+        
+        <!-- Calendar Grid -->
+        <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-[2.5rem] p-6 pb-8 border border-slate-200/60 dark:border-slate-800/60 shadow-xl shadow-indigo-500/5">
+          <div class="grid grid-cols-7 gap-y-6 text-center">
+            ${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(day => 
+              `<div class="text-[10px] font-semibold tracking-widest text-slate-400 dark:text-slate-500 mb-2">${day}</div>`
             ).join('')}
-            ${generateCalendarDays(year, month, entriesMap, emotionColors)}
+            ${generateCalendarDays(year, month, entriesMap)}
           </div>
         </section>
         
-        <hr class="border-slate-200 dark:border-slate-800"/>
-        
-        <!-- Keyword Cloud (V2.0) -->
-        <section>
-          <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary">cloud</span>
-            이번 달 키워드
-          </h3>
+        <!-- Keyword Cloud -->
+        <section class="space-y-6">
+          <div class="text-center">
+            <h3 class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 tracking-[0.2em] uppercase">Memories</h3>
+            <p class="text-2xl font-serif text-slate-800 dark:text-slate-200 mt-1">This Month in Words</p>
+          </div>
+          
           ${keywords.length > 0 ? `
-            <div class="flex flex-wrap gap-2 justify-center">
+            <div class="flex flex-wrap gap-2.5 justify-center bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl p-8 rounded-[2.5rem] border border-slate-200/50 dark:border-slate-800/50 shadow-sm relative overflow-hidden">
+              <div class="absolute bottom-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
               ${keywords.slice(0, 15).map((kw, index) => {
-                const sizeClasses = [
-                  'text-2xl font-bold px-5 py-2.5 bg-primary/30',
-                  'text-xl font-bold px-4 py-2 bg-primary/25',
-                  'text-lg font-medium px-4 py-2 bg-primary/20',
-                  'text-base font-medium px-3 py-1.5 bg-primary/15',
-                  'text-sm px-3 py-1.5 bg-primary/10'
-                ];
-                const sizeIndex = Math.min(Math.floor(index / 3), 4);
-                const sizeClass = sizeClasses[sizeIndex];
-                return `<button class="rounded-full ${sizeClass} text-slate-900 dark:text-slate-100 hover:scale-105 transition-transform">#${kw.keyword} <span class="text-xs opacity-60">${kw.count}</span></button>`;
+                const isTop = index < 3;
+                const sizeClass = isTop ? 'text-[15px] px-6 py-3 font-medium' : 'text-[13px] px-4 py-2 font-normal';
+                const bgClass = isTop ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-500' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-indigo-400';
+                
+                return `<button class="rounded-full ${sizeClass} ${bgClass} transition-all duration-300 hover:-translate-y-1 relative z-10 group">
+                  #${kw.keyword}
+                  <span class="ml-1.5 opacity-60 text-[10px] bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded-full">${kw.count}</span>
+                </button>`;
               }).join('')}
             </div>
           ` : `
-            <p class="text-center text-slate-500 dark:text-slate-400 py-8">
-              아직 키워드가 없습니다
-            </p>
+            <div class="text-center bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl p-10 rounded-[2.5rem] border border-slate-200/50 dark:border-slate-800/50">
+              <p class="text-slate-400 dark:text-slate-500 font-serif italic text-lg">아직 기록된 단어가 없습니다.<br>오늘의 조각을 남겨보세요.</p>
+            </div>
           `}
         </section>
         
-        <!-- Featured Entry (V2.0 with emotion & keywords) -->
+        <!-- Featured Entry -->
         ${entries.length > 0 ? `
-          <section class="mt-4 p-5 rounded-xl bg-primary/5 border border-primary/10">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <span class="text-2xl">${emotionEmojis[entries[0].emotion] || '😐'}</span>
-                <h4 class="font-bold text-primary">${entries[0].title || '제목 없음'}</h4>
+          <section class="mt-4 p-8 rounded-[2.5rem] bg-indigo-50 dark:bg-indigo-500/5 border border-indigo-100 dark:border-indigo-500/10 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600/5 rounded-full blur-3xl group-hover:bg-indigo-600/10 transition-colors duration-500"></div>
+            
+            <div class="relative z-10">
+              <div class="flex flex-col gap-1 mb-6">
+                <span class="text-[10px] text-indigo-500 dark:text-indigo-400 tracking-[0.2em] uppercase font-semibold">Latest Entry</span>
+                <span class="text-sm text-slate-500 font-medium">${new Date(entries[0].entry_date || entries[0].date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</span>
               </div>
-              <span class="text-xs text-primary/60 font-medium">${new Date(entries[0].entry_date || entries[0].date).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })}</span>
+              
+              <p class="text-slate-800 dark:text-slate-200 leading-relaxed text-lg font-serif italic mb-6">
+                "${truncateText(entries[0].content, 100)}"
+              </p>
+              
+              <div class="flex items-center justify-between">
+                <div class="flex flex-wrap gap-2">
+                  ${(entries[0].keywords || []).slice(0,2).map(kw => `<span class="inline-block bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-[11px] font-medium tracking-wide">#${kw}</span>`).join('')}
+                </div>
+                
+                <button onclick="window.location.href='/timeline'" class="size-10 flex items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 hover:scale-110 transition-transform">
+                  <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+              </div>
             </div>
-            ${entries[0].keywords && entries[0].keywords.length > 0 ? `
-              <div class="flex flex-wrap gap-1 mb-2">
-                ${entries[0].keywords.map(kw => `<span class="inline-block bg-primary/10 text-primary px-2 py-0.5 rounded-full text-xs">#${kw}</span>`).join('')}
-              </div>
-            ` : ''}
-            <p class="text-slate-700 dark:text-slate-300 leading-relaxed text-sm">
-              ${truncateText(entries[0].content, 150)}
-            </p>
-            <button onclick="window.location.href='/timeline'" class="mt-4 text-xs font-bold text-primary flex items-center gap-1 uppercase tracking-widest hover:underline">
-              전체 보기 <span class="material-symbols-outlined text-sm">north_east</span>
-            </button>
           </section>
-        ` : `
-          <section class="mt-4 p-8 rounded-xl bg-slate-50 dark:bg-slate-800 text-center">
-            <div class="text-4xl mb-3">✍️</div>
-            <p class="text-slate-500 dark:text-slate-400 mb-4">이번 달 첫 일기를 작성해보세요</p>
-            <button onclick="window.location.href='/write'" class="bg-primary text-white px-6 py-3 rounded-full hover:opacity-90 transition-opacity">
-              일기 쓰기
-            </button>
-          </section>
-        `}
+        ` : ``}
       </div>
     `;
     
     calendarContent.innerHTML = html;
   }
   
-  function generateCalendarDays(year, month, entriesMap, emotionColors) {
+  function generateCalendarDays(year, month, entriesMap) {
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = new Date();
@@ -233,7 +197,7 @@
     
     // Empty cells before first day
     for (let i = 0; i < firstDay; i++) {
-      html += '<div class="h-12 flex flex-col items-center justify-center opacity-0"></div>';
+      html += '<div class="h-12 flex flex-col items-center justify-center opacity-0 pointer-events-none"></div>';
     }
     
     // Days of month
@@ -241,15 +205,22 @@
       const isToday = isCurrentMonth && day === currentDay;
       const entry = entriesMap[day];
       
-      // V2.0: Use emotion color
-      const emotionColor = entry ? emotionColors[entry.emotion] || 'bg-primary/50' : 'bg-slate-200 dark:bg-slate-700';
-      const dayClass = isToday ? 'text-primary font-bold scale-110' : entry ? 'font-medium' : 'text-slate-400';
-      const dotSize = isToday ? 'size-3 ring-4 ring-primary/20' : 'size-2.5';
+      const dayClass = isToday 
+        ? 'text-white bg-indigo-600 shadow-lg shadow-indigo-600/30 font-bold scale-[1.15]' 
+        : entry 
+          ? 'text-slate-800 dark:text-slate-200 font-medium hover:bg-slate-100 dark:hover:bg-slate-800' 
+          : 'text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50';
+          
+      const dotHTML = entry && !isToday
+        ? `<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 size-1.5 rounded-full bg-indigo-500"></div>`
+        : '';
       
       html += `
-        <div class="h-12 flex flex-col items-center justify-center gap-1 ${entry ? 'cursor-pointer hover:scale-110 transition-transform' : ''}" ${entry ? `onclick="window.location.href='/timeline'"` : ''}>
-          <span class="text-xs ${dayClass}">${day}</span>
-          ${entry ? `<div class="${dotSize} rounded-full ${emotionColor}"></div>` : ''}
+        <div class="h-12 flex items-center justify-center ${entry ? 'cursor-pointer' : ''}" ${entry ? `onclick="window.location.href='/timeline'"` : ''}>
+          <div class="relative size-9 flex items-center justify-center rounded-full transition-all duration-300 ${dayClass}">
+            <span class="text-[14px] leading-none mb-[1px]">${day}</span>
+            ${dotHTML}
+          </div>
         </div>
       `;
     }

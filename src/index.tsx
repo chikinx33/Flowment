@@ -716,20 +716,31 @@ app.get('/write', (c) => {
         </header>
 
         <!-- Main Writing Area -->
-        <main class="flex-1 flex flex-col px-4 py-6 w-full">
-            <!-- Content Input (Single Line) -->
-            <div class="flex-1 flex flex-col justify-center">
-                <textarea id="content-textarea" class="w-full bg-transparent border-none focus:ring-0 text-lg dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none leading-relaxed p-0 text-slate-700 text-center" placeholder="오늘 하루를 한 문장으로 기록해보세요..." spellcheck="false" rows="3" maxlength="100"></textarea>
-                <div class="text-center text-xs text-slate-400 mt-2">
-                    <span id="char-count">0</span> / 100
+        <main class="flex-1 flex flex-col px-6 py-8 w-full page-transition relative">
+            
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-500/5 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
+
+            <div class="flex-1 flex flex-col justify-center relative">
+                <span class="absolute -top-6 -left-2 text-6xl text-slate-200 dark:text-slate-800 font-serif opacity-40 select-none">"</span>
+                <textarea id="content-textarea" class="w-full bg-transparent border-none focus:ring-0 text-2xl md:text-3xl dark:text-slate-200 placeholder:text-slate-400/70 dark:placeholder:text-slate-600 resize-none leading-relaxed p-0 text-slate-800 text-center font-serif italic font-medium z-10" placeholder="오늘 하루를 한 문장으로 기록해보세요..." spellcheck="false" rows="3" maxlength="100"></textarea>
+                <span class="absolute -bottom-10 -right-2 text-6xl text-slate-200 dark:text-slate-800 font-serif opacity-40 select-none">"</span>
+                
+                <div class="text-center text-[10px] uppercase tracking-widest text-slate-400 mt-8">
+                    <span id="char-count" class="font-medium text-indigo-500">0</span> <span class="opacity-50">/ 100</span>
                 </div>
             </div>
 
-            <!-- Keywords Input (3 Fixed Fields) -->
-            <div class="mt-6 space-y-3">
-                <input id="keyword-input-1" class="w-full bg-transparent border-b border-slate-300 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-0 text-center text-sm py-2 px-0 transition-colors text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600" placeholder="키워드 1" type="text" maxlength="20"/>
-                <input id="keyword-input-2" class="w-full bg-transparent border-b border-slate-300 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-0 text-center text-sm py-2 px-0 transition-colors text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600" placeholder="키워드 2" type="text" maxlength="20"/>
-                <input id="keyword-input-3" class="w-full bg-transparent border-b border-slate-300 dark:border-slate-700 focus:border-primary dark:focus:border-primary focus:ring-0 text-center text-sm py-2 px-0 transition-colors text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600" placeholder="키워드 3" type="text" maxlength="20"/>
+            <!-- Keywords Input Divider -->
+            <div class="flex items-center justify-center gap-4 mt-12 mb-8 opacity-50">
+                <div class="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent max-w-[100px]"></div>
+                <span class="material-symbols-outlined text-slate-400 text-sm">vpn_key</span>
+                <div class="flex-1 h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent max-w-[100px]"></div>
+            </div>
+
+            <div class="space-y-4">
+                <input id="keyword-input-1" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 shadow-sm rounded-2xl text-center text-[15px] py-4 px-4 transition-all text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 font-medium tracking-wide" placeholder="# 첫 번째 기억 조각" type="text" maxlength="20"/>
+                <input id="keyword-input-2" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 shadow-sm rounded-2xl text-center text-[15px] py-4 px-4 transition-all text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 font-medium tracking-wide" placeholder="# 두 번째 기억 조각" type="text" maxlength="20"/>
+                <input id="keyword-input-3" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 shadow-sm rounded-2xl text-center text-[15px] py-4 px-4 transition-all text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 font-medium tracking-wide" placeholder="# 세 번째 기억 조각" type="text" maxlength="20"/>
             </div>
         </main>
 
@@ -1228,84 +1239,92 @@ app.get('/settings', (c) => {
             </header>
 
             <!-- Main Content -->
-            <main class="flex-1 px-4 py-6 space-y-8">
-                <!-- Upgrade Card -->
-                <div class="rounded-2xl p-4 flex items-center justify-between shadow-sm bg-primary">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-white/20 p-3 rounded-xl">
-                            <span class="material-symbols-outlined text-white">workspace_premium</span>
+            <main class="flex-1 px-4 py-8 space-y-10 relative">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
+
+                <!-- User Profile / Upgrade Card -->
+                <div class="relative rounded-[2rem] p-6 shadow-xl shadow-indigo-500/20 bg-gradient-to-br from-indigo-500 to-indigo-700 overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-white/20 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-white">
+                                <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">stars</span>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-white text-lg tracking-tight mb-0.5">Flowment Premium</h3>
+                                <p class="text-indigo-100 text-[13px] opacity-90">Unlock all advanced features</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-semibold text-white text-sm">Upgrade to Premium</h3>
-                            <p class="text-white/80 text-xs">Unlock all advanced features</p>
-                        </div>
+                        <span class="material-symbols-outlined text-white/70">arrow_forward_ios</span>
                     </div>
-                    <span class="material-symbols-outlined text-white/80">chevron_right</span>
                 </div>
 
                 <!-- Preferences -->
-                <div class="space-y-3">
-                    <h2 class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 tracking-widest uppercase px-1">Preferences</h2>
-                    <div class="bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                <div class="space-y-4">
+                    <h2 class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase px-2">Preferences</h2>
+                    <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
                         <!-- Notification Time -->
-                        <div class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-700">
+                        <div class="flex items-center justify-between p-5 border-b border-slate-200/60 dark:border-slate-800/60 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/50 cursor-pointer">
                             <div class="flex items-center gap-4">
-                                <div class="p-2 rounded-lg">
-                                    <span class="material-symbols-outlined text-xl">notifications</span>
+                                <div class="bg-indigo-50 dark:bg-indigo-500/10 p-2.5 rounded-xl text-indigo-600 dark:text-indigo-400">
+                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">notifications</span>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium">Notification Time</p>
-                                    <p class="text-xs text-slate-500">Daily flow reminder</p>
+                                    <p class="text-[15px] font-medium text-slate-800 dark:text-slate-200">Notification Time</p>
+                                    <p class="text-[12px] text-slate-500 dark:text-slate-400 mt-0.5">Daily flow reminder</p>
                                 </div>
                             </div>
-                            <div class="px-3 py-1.5 rounded-lg flex items-center gap-2">
-                                <span class="text-primary text-sm font-medium" id="notification-time-display">08:00 AM</span>
-                                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 text-xs">schedule</span>
+                            <div class="px-3 py-1.5 rounded-xl flex items-center gap-2 bg-slate-100/50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300">
+                                <span class="text-[14px] font-medium" id="notification-time-display">08:00 AM</span>
+                                <span class="material-symbols-outlined text-[16px]">schedule</span>
                             </div>
                         </div>
 
-                        <!-- Dark Mode -->
-                        <div class="flex items-center justify-between p-4">
+                        <!-- Dark Mode Toggle -->
+                        <div class="flex items-center justify-between p-5 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
                             <div class="flex items-center gap-4">
-                                <div class="p-2 rounded-lg">
-                                    <span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-xl">dark_mode</span>
+                                <div class="bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl text-slate-600 dark:text-slate-400">
+                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">dark_mode</span>
                                 </div>
-                                <p class="text-sm font-medium">Dark Mode</p>
+                                <p class="text-[15px] font-medium text-slate-800 dark:text-slate-200">Dark Mode</p>
                             </div>
-                            <label class="relative flex h-6 w-11 cursor-pointer items-center rounded-full p-0.5 transition-colors bg-slate-300 dark:bg-primary">
+                            <label class="relative flex h-7 w-12 cursor-pointer items-center rounded-full p-1 transition-colors bg-slate-200 dark:bg-indigo-500 duration-300">
                                 <input id="dark-mode-toggle" class="peer sr-only" type="checkbox"/>
-                                <div class="h-5 w-5 rounded-full bg-white shadow-sm transition-transform translate-x-0 peer-checked:translate-x-5"></div>
+                                <div class="h-5 w-5 rounded-full bg-white shadow-sm transition-transform translate-x-0 peer-checked:translate-x-5 duration-300"></div>
                             </label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Data & System -->
-                <div class="space-y-3">
-                    <h2 class="text-[10px] font-semibold text-slate-500 dark:text-slate-400 tracking-widest uppercase px-1">Data & System</h2>
-                    <div class="bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                <div class="space-y-4">
+                    <h2 class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase px-2">Data & System</h2>
+                    <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
                         <!-- Clear Data -->
-                        <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between p-5 border-b border-slate-200/60 dark:border-slate-800/60 transition-colors hover:bg-red-50/50 dark:hover:bg-red-900/10 cursor-pointer">
                             <div class="flex items-center gap-4">
-                                <div class="p-2 rounded-lg">
-                                    <span class="material-symbols-outlined text-red-500 text-xl">delete</span>
+                                <div class="bg-red-50 dark:bg-red-500/10 p-2.5 rounded-xl text-red-500">
+                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">delete</span>
                                 </div>
-                                <p class="text-sm font-medium text-red-500">Clear All Data</p>
+                                <p class="text-[15px] font-medium text-red-500">Clear All Data</p>
                             </div>
                         </div>
 
                         <!-- About -->
-                        <div class="flex items-center justify-between p-4">
+                        <div class="flex items-center justify-between p-5 transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/50 cursor-pointer">
                             <div class="flex items-center gap-4">
-                                <div class="p-2 rounded-lg">
-                                    <span class="material-symbols-outlined text-slate-600 dark:text-slate-400 text-xl">info</span>
+                                <div class="bg-slate-100 dark:bg-slate-800 p-2.5 rounded-xl text-slate-600 dark:text-slate-400">
+                                    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">info</span>
                                 </div>
-                                <p class="text-sm font-medium">About Flowment</p>
+                                <p class="text-[15px] font-medium text-slate-800 dark:text-slate-200">About Flowment</p>
                             </div>
-                            <span class="text-xs text-slate-500 dark:text-slate-400">v1.0.0</span>
+                            <span class="text-[13px] text-slate-500 dark:text-slate-400 font-medium tracking-wide">v1.2.0</span>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Bottom spacer for navbar -->
+                <div class="h-20"></div>
             </main>
 
             <!-- Bottom Navigation -->

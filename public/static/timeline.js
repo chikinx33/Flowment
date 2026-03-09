@@ -94,8 +94,8 @@
     };
     
     // Generate timeline HTML
-    let timelineHTML = '<div class="relative w-full">';
-    timelineHTML += '<div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-primary/20 -translate-x-1/2"></div>';
+    let timelineHTML = '<div class="relative w-full py-8">';
+    timelineHTML += '<div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-indigo-500/20 to-transparent -translate-x-1/2"></div>';
     
     entries.forEach((entry, index) => {
       // V2.0 API uses entry_date instead of date
@@ -109,58 +109,45 @@
         ? `오늘, ${date.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })}`
         : date.toLocaleDateString('ko-KR', { weekday: 'long', month: 'long', day: 'numeric' });
       
-      const dotOpacity = isToday ? 'bg-primary' : 'bg-primary/40';
-      const textColor = isToday ? 'text-primary' : 'text-slate-400';
+      const dotOpacity = isToday ? 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.6)]' : 'bg-indigo-300 dark:bg-indigo-700/60';
+      const textColor = isToday ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400';
       const keywordColor = isToday ? 'text-slate-800 dark:text-slate-100' : 'text-slate-700 dark:text-slate-200';
-      
-      // V2.0: Get emotion emoji and mood score
-      const emotionEmoji = emotionEmojis[entry.emotion] || '😐';
-      const moodScore = entry.mood_score || 5;
-      const moodStars = '⭐'.repeat(moodScore);
       
       // V2.0: Keywords array (not single keyword)
       const keywords = entry.keywords || [];
       const keywordsHTML = keywords.length > 0 
-        ? keywords.map(kw => `<span class="inline-block bg-primary/10 text-primary dark:bg-primary/20 px-2 py-0.5 rounded-full text-xs">#${kw}</span>`).join(' ')
-        : '<span class="text-slate-400 text-xs">키워드 없음</span>';
-      
-      // V2.0: Title (optional)
-      const title = entry.title || '';
-      const titleHTML = title ? `<h3 class="text-lg font-semibold ${keywordColor} mb-1">${title}</h3>` : '';
+        ? keywords.map(kw => `<span class="inline-block bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide">#${kw}</span>`).join(' ')
+        : '';
+        
+      const contentPreview = `<p class="text-[13px] text-slate-600 dark:text-slate-300 mt-3 leading-relaxed font-light">${truncateText(entry.content, 90)}</p>`;
       
       if (isLeft) {
         // Left side
         timelineHTML += `
-          <div class="relative flex items-center justify-between mb-16">
+          <div class="relative flex items-center justify-between mb-16 group">
             <div class="w-[calc(50%-2rem)] flex flex-col items-end text-right">
-              <span class="text-[10px] uppercase tracking-[0.2em] ${textColor} font-semibold mb-1">${dateLabel}</span>
-              <div class="flex items-center justify-end gap-2 mb-2">
-                <span class="text-xl">${emotionEmoji}</span>
-                <span class="text-xs text-slate-500">${moodStars}</span>
+              <span class="text-[10px] uppercase tracking-widest ${textColor} font-semibold mb-2">${dateLabel}</span>
+              <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md p-5 rounded-l-[2rem] rounded-tr-[2rem] shadow-sm border border-slate-100 dark:border-slate-800/60 group-hover:shadow-md transition-all duration-300 w-full max-w-[280px]">
+                <div class="flex flex-wrap justify-end gap-1.5 mb-1">${keywordsHTML}</div>
+                ${contentPreview}
               </div>
-              ${titleHTML}
-              <div class="flex flex-wrap justify-end gap-1 mb-2">${keywordsHTML}</div>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed max-w-xs">${truncateText(entry.content, 100)}</p>
             </div>
-            <div class="absolute left-1/2 -translate-x-1/2 z-10 size-3 rounded-full ${dotOpacity} ring-4 ring-white dark:ring-slate-900"></div>
+            <div class="absolute left-1/2 -translate-x-1/2 z-10 size-3.5 rounded-full ${dotOpacity} ring-4 ring-white dark:ring-slate-950 transition-all duration-300 group-hover:scale-125"></div>
             <div class="w-[calc(50%-2rem)]"></div>
           </div>
         `;
       } else {
         // Right side
         timelineHTML += `
-          <div class="relative flex items-center justify-between mb-16">
+          <div class="relative flex items-center justify-between mb-16 group">
             <div class="w-[calc(50%-2rem)]"></div>
-            <div class="absolute left-1/2 -translate-x-1/2 z-10 size-3 rounded-full ${dotOpacity} ring-4 ring-white dark:ring-slate-900"></div>
+            <div class="absolute left-1/2 -translate-x-1/2 z-10 size-3.5 rounded-full ${dotOpacity} ring-4 ring-white dark:ring-slate-950 transition-all duration-300 group-hover:scale-125"></div>
             <div class="w-[calc(50%-2rem)] flex flex-col items-start text-left">
-              <span class="text-[10px] uppercase tracking-[0.2em] ${textColor} font-semibold mb-1">${dateLabel}</span>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="text-xl">${emotionEmoji}</span>
-                <span class="text-xs text-slate-500">${moodStars}</span>
+              <span class="text-[10px] uppercase tracking-widest ${textColor} font-semibold mb-2">${dateLabel}</span>
+              <div class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md p-5 rounded-r-[2rem] rounded-tl-[2rem] shadow-sm border border-slate-100 dark:border-slate-800/60 group-hover:shadow-md transition-all duration-300 w-full max-w-[280px]">
+                <div class="flex flex-wrap justify-start gap-1.5 mb-1">${keywordsHTML}</div>
+                ${contentPreview}
               </div>
-              ${titleHTML}
-              <div class="flex flex-wrap gap-1 mb-2">${keywordsHTML}</div>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed max-w-xs">${truncateText(entry.content, 100)}</p>
             </div>
           </div>
         `;
