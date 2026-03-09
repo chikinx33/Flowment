@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "flowment",
+  "compatibility_date": "2026-03-01",
+  "pages_build_output_dir": "./dist",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  // ✅ D1 DATABASE CONFIGURATION (ACTIVE)
+  // Production database connected successfully
+  // Database name: flowment-production
+  // Database ID: caceaa53-2415-4ed0-a02f-d887ccc13343
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "flowment-production",
+      "database_id": "caceaa53-2415-4ed0-a02f-d887ccc13343"
+    }
+  ]
+}
