@@ -47,21 +47,27 @@
   
   function showFirstTimeMessage() {
     appDiv.innerHTML = `
-      <div class="my-auto text-center space-y-6">
-        <div class="mb-8">
-          <img src="/icons/icon-192.png?t=${Date.now()}" alt="Flowment Logo" class="w-32 h-32 mx-auto mb-6 drop-shadow-2xl">
+      <div class="my-auto text-center space-y-8 animate-fade-in px-6">
+        <div class="mb-10 relative">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl"></div>
+          <img src="/icons/icon-192.png?t=${Date.now()}" alt="Flowment Logo" class="relative w-28 h-28 mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500 animate-float">
         </div>
-        <p class="text-primary/60 dark:text-primary/50 text-sm font-medium tracking-wide uppercase">Welcome to Flowment</p>
-        <h2 class="text-slate-900 dark:text-slate-100 text-3xl md:text-4xl lg:text-5xl leading-tight font-semibold px-4">
-          Your memory journal awaits
-        </h2>
-        <p class="text-slate-600 dark:text-slate-400 text-lg max-w-md mx-auto px-4">
-          매일 일기를 쓰고, 키워드로 기억하세요.<br/>
-          당신의 기억이 일기가 됩니다.
+        
+        <div class="space-y-4">
+          <p class="text-indigo-600 dark:text-indigo-400 text-xs font-semibold tracking-[0.2em] uppercase">Welcome to Flowment</p>
+          <h2 class="text-slate-900 dark:text-slate-100 text-4xl md:text-5xl leading-tight font-serif italic tracking-tight">
+            Your memory<br>journal awaits
+          </h2>
+        </div>
+        
+        <p class="text-slate-500 dark:text-slate-400 text-base leading-relaxed max-w-sm mx-auto font-light">
+          매일 기록하고, 키워드로 지난 날을 기억하세요.<br/>당신의 기억이 곧 일기가 됩니다.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <button onclick="window.location.href='/write'" class="flex h-14 px-8 items-center justify-center bg-primary text-white text-base font-semibold tracking-wide shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity rounded-full">
-            첫 일기 작성하기
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
+          <button onclick="window.location.href='/write'" class="group relative flex h-14 w-full sm:w-auto px-10 items-center justify-center bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-base font-medium tracking-wide shadow-xl hover:shadow-2xl shadow-slate-900/20 dark:shadow-white/20 transition-all duration-300 rounded-[2rem] overflow-hidden">
+            <span class="relative z-10 group-hover:scale-105 transition-transform duration-300">첫 일기 작성하기</span>
+            <div class="absolute inset-0 bg-indigo-600 opacity-0 group-hover:opacity-10 dark:bg-indigo-400 transition-opacity duration-300"></div>
           </button>
         </div>
       </div>
@@ -73,44 +79,45 @@
     let selectedAnswer = null;
     
     appDiv.innerHTML = `
-      <div class="absolute inset-0 flex flex-col">
+      <div class="absolute inset-0 flex flex-col page-transition">
         <!-- Top Section: Logo (30% height) -->
-        <div class="flex items-center justify-center" style="height: 30%;">
-          <div class="flex flex-col items-center">
-            <img src="/icons/icon-192.png?t=${Date.now()}" alt="Flowment Logo" class="w-16 h-16 mb-2 drop-shadow-lg">
-            <h1 class="text-primary text-lg font-semibold tracking-wide">Flowment</h1>
+        <div class="flex items-center justify-center relative" style="height: 30%;">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl"></div>
+          <div class="flex flex-col items-center relative z-10 animate-float">
+            <img src="/icons/icon-192.png?t=${Date.now()}" alt="Flowment Logo" class="w-14 h-14 mb-3 drop-shadow-xl opacity-90">
+            <h1 class="text-indigo-600 dark:text-indigo-400 text-[11px] font-semibold tracking-[0.2em] uppercase">Memory Gate</h1>
           </div>
         </div>
         
         <!-- Middle Section: Quiz (40% height) -->
-        <div class="flex items-center justify-center px-4" style="height: 40%;">
+        <div class="flex items-center justify-center px-6" style="height: 40%;">
           <!-- Question with Quotation Marks -->
-          <div class="text-center max-w-md mx-auto">
-            <img src="/icons/quote-start.png?t=${Date.now()}" alt="quote" class="w-8 h-8 mx-auto mb-4 opacity-30">
-            <p class="text-slate-900 dark:text-slate-100 text-lg leading-relaxed px-4">
+          <div class="text-center w-full max-w-sm mx-auto relative">
+            <span class="absolute -top-6 -left-2 text-6xl text-slate-200 dark:text-slate-800 font-serif opacity-50 select-none">"</span>
+            <p class="text-slate-800 dark:text-slate-200 text-xl md:text-2xl leading-relaxed px-4 font-serif italic font-medium relative z-10">
               ${question}
             </p>
-            <img src="/icons/quote-end.png?t=${Date.now()}" alt="quote" class="w-8 h-8 mx-auto mt-4 opacity-30">
+            <span class="absolute -bottom-10 -right-2 text-6xl text-slate-200 dark:text-slate-800 font-serif opacity-50 select-none">"</span>
           </div>
         </div>
         
         <!-- Bottom Section: Keywords (30% height) -->
-        <div class="flex items-center justify-center" style="height: 30%;">
-          <div class="w-full max-w-md px-4">
-            <!-- Lock Gate Divider -->
-            <div class="flex items-center justify-center gap-4 mb-4">
-              <div class="flex-1 h-px bg-gradient-to-r from-transparent via-yellow-600/40 to-yellow-600/60 max-w-[80px]"></div>
-              <img src="/icons/lock-gate.png?t=${Date.now()}" alt="Memory Gate Lock" class="w-14 h-14 flex-shrink-0">
-              <div class="flex-1 h-px bg-gradient-to-l from-transparent via-yellow-600/40 to-yellow-600/60 max-w-[80px]"></div>
+        <div class="flex items-end justify-center pb-12" style="height: 30%;">
+          <div class="w-full max-w-sm px-6">
+            <div class="text-center mb-6">
+              <p class="text-[10px] text-slate-400 tracking-widest uppercase mb-1">Select the correct keyword</p>
+              <div class="w-10 h-px bg-slate-200 dark:bg-slate-800 mx-auto"></div>
             </div>
             
             <!-- Options -->
             <div class="flex flex-col gap-3" id="options-container">
         ${options.map(option => `
-          <button class="option-btn inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 transition-all hover:opacity-90 mx-auto" data-answer="${option}">
-            <span class="text-white text-sm">${option}</span>
+          <button class="option-btn group relative flex h-[3.25rem] w-full items-center justify-center rounded-[1.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-md transition-all duration-300 overflow-hidden" data-answer="${option}">
+            <div class="absolute inset-0 bg-indigo-50 dark:bg-indigo-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="text-slate-700 dark:text-slate-300 font-medium text-[15px] tracking-wide relative z-10 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400">${option}</span>
           </button>
         `).join('')}
+            </div>
           </div>
         </div>
       </div>

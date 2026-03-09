@@ -453,62 +453,93 @@ app.get('/', (c) => {
     <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flowment - Memory Gate</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Flowment</title>
         
         <!-- PWA Meta Tags -->
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#306ee8">
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Flowment">
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-        <meta name="description" content="기억을 유지하기 위한 일기 앱. 매일 키워드 퀴즈를 통과하면 새로운 기록을 작성할 수 있습니다.">
-        <meta name="mobile-web-app-capable" content="yes">
+        
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap" rel="stylesheet"/>
+        
         <script>
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
               colors: {
-                "primary": "#306ee8",
+                "primary": "#4f46e5", // Indigo 600
+                "primary-light": "#6366f1",
+                "surface": "#ffffff",
+                "surface-dark": "#0f172a",
               },
               fontFamily: {
-                "sans": ["'Spline Sans'", "sans-serif"],
+                "sans": ["'Pretendard'", "sans-serif"],
+                "serif": ["'Newsreader'", "serif"],
               },
-              borderRadius: {
-                "lg": "0.5rem",
-                "xl": "0.75rem",
-                "2xl": "1rem",
-                "full": "9999px"
+              boxShadow: {
+                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
               },
+              animation: {
+                'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'float': 'float 6s ease-in-out infinite',
+              },
+              keyframes: {
+                fadeIn: {
+                  '0%': { opacity: 0, transform: 'translateY(10px)' },
+                  '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                float: {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-10px)' },
+                }
+              }
             },
           },
         }
         </script>
         <style>
           body { 
-            font-family: 'Spline Sans', sans-serif; 
+            font-family: 'Pretendard', sans-serif; 
             min-height: 100dvh;
+            -webkit-tap-highlight-color: transparent;
+          }
+          .font-serif {
+            font-family: 'Newsreader', serif;
           }
           .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
           }
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          *::-webkit-scrollbar {
-            display: none;
+          /* Hide scrollbar */
+          *::-webkit-scrollbar { display: none; }
+          * { -ms-overflow-style: none; scrollbar-width: none; }
+          
+          /* Glassmorphism utilities classes */
+          .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
           }
-          /* Hide scrollbar for IE, Edge and Firefox */
-          * {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+          .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          .page-transition {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           }
         </style>
     </head>
-    <body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         <!-- PWA Install Banner -->
         <div id="pwa-install-banner" class="hidden fixed top-0 left-0 right-0 z-50 bg-primary text-white shadow-lg">
             <div class="max-w-md mx-auto p-4 flex items-center justify-between">
@@ -530,7 +561,7 @@ app.get('/', (c) => {
             </div>
         </div>
 
-        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-white dark:bg-slate-900">
+        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
             <!-- Main Content Area -->
             <div class="flex-1 flex flex-col p-6" id="app">
                 <div class="text-center">
@@ -562,56 +593,93 @@ app.get('/write', (c) => {
     <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flowment - Writing</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Flowment</title>
         
         <!-- PWA Meta Tags -->
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#306ee8">
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Flowment">
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
         
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap" rel="stylesheet"/>
+        
         <script>
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
               colors: {
-                "primary": "#306ee8",
+                "primary": "#4f46e5", // Indigo 600
+                "primary-light": "#6366f1",
+                "surface": "#ffffff",
+                "surface-dark": "#0f172a",
               },
               fontFamily: {
-                "sans": ["'Spline Sans'", "sans-serif"],
+                "sans": ["'Pretendard'", "sans-serif"],
+                "serif": ["'Newsreader'", "serif"],
               },
-              borderRadius: {"lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+              boxShadow: {
+                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+              },
+              animation: {
+                'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'float': 'float 6s ease-in-out infinite',
+              },
+              keyframes: {
+                fadeIn: {
+                  '0%': { opacity: 0, transform: 'translateY(10px)' },
+                  '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                float: {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-10px)' },
+                }
+              }
             },
           },
         }
         </script>
         <style>
           body { 
-            font-family: 'Spline Sans', sans-serif;
-            min-height: 100dvh; 
+            font-family: 'Pretendard', sans-serif; 
+            min-height: 100dvh;
+            -webkit-tap-highlight-color: transparent;
+          }
+          .font-serif {
+            font-family: 'Newsreader', serif;
           }
           .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
           }
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          *::-webkit-scrollbar {
-            display: none;
+          /* Hide scrollbar */
+          *::-webkit-scrollbar { display: none; }
+          * { -ms-overflow-style: none; scrollbar-width: none; }
+          
+          /* Glassmorphism utilities classes */
+          .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
           }
-          /* Hide scrollbar for IE, Edge and Firefox */
-          * {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+          .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          .page-transition {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           }
         </style>
     </head>
-    <body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         <!-- PWA Install Banner -->
         <div id="pwa-install-banner" class="hidden fixed top-0 left-0 right-0 z-50 bg-primary text-white shadow-lg">
             <div class="max-w-md mx-auto p-4 flex items-center justify-between">
@@ -633,9 +701,9 @@ app.get('/write', (c) => {
             </div>
         </div>
 
-        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-white dark:bg-slate-900">
+        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
         <!-- Top Navigation Bar -->
-        <header class="sticky top-0 z-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 py-4">
+        <header class="sticky top-0 z-20 bg-transparent pt-6 flex items-center justify-between px-4 py-4">
             <button onclick="window.location.href='/'" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center">
                 <span class="material-symbols-outlined text-2xl">close</span>
             </button>
@@ -666,31 +734,29 @@ app.get('/write', (c) => {
         </main>
 
         <!-- Bottom Navigation -->
-        <nav class="sticky bottom-0 z-10 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-3">
-            <div class="w-full flex justify-between items-center max-w-md mx-auto">
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/">
-                    <span class="material-symbols-outlined">home</span>
-                    <span class="text-[10px] font-medium uppercase tracking-wide">Home</span>
+        
+        <!-- Floating Bottom Navigation Bar -->
+        <div class="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+            <nav class="pointer-events-auto flex justify-between items-center w-full max-w-sm glass-nav rounded-[2rem] px-6 py-3 shadow-glass dark:shadow-glass-dark transition-all duration-300">
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/">
+                    <span class="material-symbols-outlined text-[26px]">home</span>
                 </a>
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/calendar">
-                    <span class="material-symbols-outlined">calendar_month</span>
-                    <span class="text-[10px] font-medium uppercase tracking-wide">Calendar</span>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/calendar">
+                    <span class="material-symbols-outlined text-[26px]">calendar_month</span>
                 </a>
-                <div class="relative -top-6">
-                    <button class="bg-primary text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 ring-4 ring-white dark:ring-slate-900">
+                <div class="relative -top-6 transform hover:scale-105 transition-transform">
+                    <button class="bg-primary shadow-indigo-600/30 text-white size-14 rounded-full flex items-center justify-center shadow-lg ring-[6px] ring-slate-50 dark:ring-slate-950 transition-all duration-300">
                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1">edit</span>
                     </button>
                 </div>
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/timeline">
-                    <span class="material-symbols-outlined">history</span>
-                    <span class="text-[10px] font-medium uppercase tracking-wide">Timeline</span>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/timeline">
+                    <span class="material-symbols-outlined text-[26px]">history</span>
                 </a>
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/settings">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="text-[10px] font-medium uppercase tracking-wide">Settings</span>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/settings">
+                    <span class="material-symbols-outlined text-[26px]">tune</span>
                 </a>
-            </div>
-        </nav>
+            </nav>
+        </div>
         </div>
 
         
@@ -709,61 +775,93 @@ app.get('/timeline', (c) => {
     <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flowment - Keyword Timeline</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Flowment</title>
         
         <!-- PWA Meta Tags -->
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#306ee8">
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Flowment">
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
         
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap" rel="stylesheet"/>
+        
         <script>
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
               colors: {
-                "primary": "#306ee8",
+                "primary": "#4f46e5", // Indigo 600
+                "primary-light": "#6366f1",
+                "surface": "#ffffff",
+                "surface-dark": "#0f172a",
               },
               fontFamily: {
-                "sans": ["'Spline Sans'", "sans-serif"],
+                "sans": ["'Pretendard'", "sans-serif"],
+                "serif": ["'Newsreader'", "serif"],
               },
-              borderRadius: {
-                "lg": "0.5rem",
-                "xl": "0.75rem",
-                "2xl": "1rem",
-                "full": "9999px"
+              boxShadow: {
+                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
               },
+              animation: {
+                'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'float': 'float 6s ease-in-out infinite',
+              },
+              keyframes: {
+                fadeIn: {
+                  '0%': { opacity: 0, transform: 'translateY(10px)' },
+                  '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                float: {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-10px)' },
+                }
+              }
             },
           },
         }
         </script>
         <style>
           body { 
-            font-family: 'Spline Sans', sans-serif; 
-            min-height: 100dvh; 
+            font-family: 'Pretendard', sans-serif; 
+            min-height: 100dvh;
+            -webkit-tap-highlight-color: transparent;
+          }
+          .font-serif {
+            font-family: 'Newsreader', serif;
           }
           .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
           }
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          *::-webkit-scrollbar {
-            display: none;
+          /* Hide scrollbar */
+          *::-webkit-scrollbar { display: none; }
+          * { -ms-overflow-style: none; scrollbar-width: none; }
+          
+          /* Glassmorphism utilities classes */
+          .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
           }
-          /* Hide scrollbar for IE, Edge and Firefox */
-          * {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+          .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          .page-transition {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           }
         </style>
     </head>
-    <body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         <!-- PWA Install Banner -->
         <div id="pwa-install-banner" class="hidden fixed top-0 left-0 right-0 z-50 bg-primary text-white shadow-lg">
             <div class="max-w-md mx-auto p-4 flex items-center justify-between">
@@ -785,14 +883,14 @@ app.get('/timeline', (c) => {
             </div>
         </div>
 
-        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-white dark:bg-slate-900">
+        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
         <!-- Header -->
-        <header class="sticky top-0 z-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 px-4 py-4">
+        <header class="sticky top-0 z-20 bg-transparent pt-6 px-4 py-4">
             <div class="w-full flex items-center justify-between">
                 <button onclick="window.location.href='/'" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
                 </button>
-                <h1 class="text-xl font-semibold">Timeline</h1>
+                <h1 class="text-2xl font-serif font-medium tracking-tight">Timeline</h1>
                 <div class="w-10"></div>
             </div>
         </header>
@@ -806,31 +904,29 @@ app.get('/timeline', (c) => {
         </main>
 
         <!-- Bottom Navigation Bar -->
-        <nav class="sticky bottom-0 z-10 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-3">
-            <div class="w-full flex justify-between items-center max-w-md mx-auto">
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/">
-                    <span class="material-symbols-outlined">home</span>
-                    <span class="text-[10px] font-medium tracking-wide uppercase">Home</span>
+        
+        <!-- Floating Bottom Navigation Bar -->
+        <div class="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+            <nav class="pointer-events-auto flex justify-between items-center w-full max-w-sm glass-nav rounded-[2rem] px-6 py-3 shadow-glass dark:shadow-glass-dark transition-all duration-300">
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/">
+                    <span class="material-symbols-outlined text-[26px]">home</span>
                 </a>
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/calendar">
-                    <span class="material-symbols-outlined">calendar_month</span>
-                    <span class="text-[10px] font-medium tracking-wide uppercase">Calendar</span>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/calendar">
+                    <span class="material-symbols-outlined text-[26px]">calendar_month</span>
                 </a>
-                <div class="relative -top-6">
-                    <button onclick="window.location.href='/write'" class="bg-primary text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 ring-4 ring-white dark:ring-slate-900 hover:opacity-90 transition-opacity">
+                <div class="relative -top-6 transform hover:scale-105 transition-transform">
+                    <button onclick="window.location.href='/write'" class="bg-primary hover:bg-indigo-500 text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/40 ring-[6px] ring-white/50 dark:ring-slate-900/50 transition-all duration-300">
                         <span class="material-symbols-outlined text-3xl">add</span>
                     </button>
                 </div>
-                <a class="flex flex-col items-center gap-1 text-primary transition-colors" href="/timeline">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">history</span>
-                    <span class="text-[10px] font-medium tracking-wide uppercase border-b-2 border-primary">Timeline</span>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors text-primary dark:text-indigo-400" href="/timeline">
+                    <span class="material-symbols-outlined text-[26px]">history</span>
                 </a>
-                <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/settings">
-                    <span class="material-symbols-outlined">settings</span>
-                    <span class="text-[10px] font-medium tracking-wide uppercase">Settings</span>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/settings">
+                    <span class="material-symbols-outlined text-[26px]">tune</span>
                 </a>
-            </div>
-        </nav>
+            </nav>
+        </div>
         </div>
 
         
@@ -849,56 +945,93 @@ app.get('/calendar', (c) => {
     <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flowment - Calendar</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Flowment</title>
         
         <!-- PWA Meta Tags -->
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#306ee8">
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Flowment">
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
         
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap" rel="stylesheet"/>
+        
         <script>
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
               colors: {
-                "primary": "#306ee8",
+                "primary": "#4f46e5", // Indigo 600
+                "primary-light": "#6366f1",
+                "surface": "#ffffff",
+                "surface-dark": "#0f172a",
               },
               fontFamily: {
-                "sans": ["'Spline Sans'", "sans-serif"],
+                "sans": ["'Pretendard'", "sans-serif"],
+                "serif": ["'Newsreader'", "serif"],
               },
-              borderRadius: {"lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+              boxShadow: {
+                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+              },
+              animation: {
+                'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'float': 'float 6s ease-in-out infinite',
+              },
+              keyframes: {
+                fadeIn: {
+                  '0%': { opacity: 0, transform: 'translateY(10px)' },
+                  '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                float: {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-10px)' },
+                }
+              }
             },
           },
         }
         </script>
         <style>
           body { 
-            font-family: 'Spline Sans', sans-serif; 
-            min-height: 100dvh; 
+            font-family: 'Pretendard', sans-serif; 
+            min-height: 100dvh;
+            -webkit-tap-highlight-color: transparent;
+          }
+          .font-serif {
+            font-family: 'Newsreader', serif;
           }
           .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
           }
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          *::-webkit-scrollbar {
-            display: none;
+          /* Hide scrollbar */
+          *::-webkit-scrollbar { display: none; }
+          * { -ms-overflow-style: none; scrollbar-width: none; }
+          
+          /* Glassmorphism utilities classes */
+          .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
           }
-          /* Hide scrollbar for IE, Edge and Firefox */
-          * {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+          .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          .page-transition {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           }
         </style>
     </head>
-    <body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         <!-- PWA Install Banner -->
         <div id="pwa-install-banner" class="hidden fixed top-0 left-0 right-0 z-50 bg-primary text-white shadow-lg">
             <div class="max-w-md mx-auto p-4 flex items-center justify-between">
@@ -920,12 +1053,12 @@ app.get('/calendar', (c) => {
             </div>
         </div>
 
-        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-white dark:bg-slate-900">
-            <header class="sticky top-0 z-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 py-4">
+        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
+            <header class="sticky top-0 z-20 bg-transparent pt-6 flex items-center justify-between px-4 py-4">
                 <button onclick="window.location.href='/'" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
                     <span class="material-symbols-outlined">arrow_back</span>
                 </button>
-                <h1 class="text-xl font-semibold">Calendar</h1>
+                <h1 class="text-2xl font-serif font-medium tracking-tight">Calendar</h1>
                 <div class="w-10"></div>
             </header>
 
@@ -936,31 +1069,29 @@ app.get('/calendar', (c) => {
                 </div>
             </main>
 
-            <nav class="sticky bottom-0 z-10 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-3">
-                <div class="w-full flex justify-between items-center max-w-md mx-auto">
-                    <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/">
-                        <span class="material-symbols-outlined">home</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide">Home</span>
-                    </a>
-                    <a class="flex flex-col items-center gap-1 text-primary transition-colors" href="/calendar">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">calendar_month</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide border-b-2 border-primary">Calendar</span>
-                    </a>
-                    <div class="relative -top-6">
-                        <button onclick="window.location.href='/write'" class="bg-primary text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 ring-4 ring-white dark:ring-slate-900 hover:opacity-90 transition-opacity">
-                            <span class="material-symbols-outlined text-3xl">add</span>
-                        </button>
-                    </div>
-                    <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/timeline">
-                        <span class="material-symbols-outlined">history</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide">Timeline</span>
-                    </a>
-                    <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/settings">
-                        <span class="material-symbols-outlined">settings</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide">Settings</span>
-                    </a>
+            
+        <!-- Floating Bottom Navigation Bar -->
+        <div class="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+            <nav class="pointer-events-auto flex justify-between items-center w-full max-w-sm glass-nav rounded-[2rem] px-6 py-3 shadow-glass dark:shadow-glass-dark transition-all duration-300">
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/">
+                    <span class="material-symbols-outlined text-[26px]">home</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors text-primary dark:text-indigo-400" href="/calendar">
+                    <span class="material-symbols-outlined text-[26px]">calendar_month</span>
+                </a>
+                <div class="relative -top-6 transform hover:scale-105 transition-transform">
+                    <button onclick="window.location.href='/write'" class="bg-primary hover:bg-indigo-500 text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/40 ring-[6px] ring-white/50 dark:ring-slate-900/50 transition-all duration-300">
+                        <span class="material-symbols-outlined text-3xl">add</span>
+                    </button>
                 </div>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/timeline">
+                    <span class="material-symbols-outlined text-[26px]">history</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/settings">
+                    <span class="material-symbols-outlined text-[26px]">tune</span>
+                </a>
             </nav>
+        </div>
         </div>
 
         
@@ -979,56 +1110,93 @@ app.get('/settings', (c) => {
     <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Flowment Settings</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>Flowment</title>
         
         <!-- PWA Meta Tags -->
         <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#306ee8">
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Flowment">
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
         
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&display=swap" rel="stylesheet"/>
+        
         <script>
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
               colors: {
-                "primary": "#306ee8",
+                "primary": "#4f46e5", // Indigo 600
+                "primary-light": "#6366f1",
+                "surface": "#ffffff",
+                "surface-dark": "#0f172a",
               },
               fontFamily: {
-                "sans": ["'Spline Sans'", "sans-serif"],
+                "sans": ["'Pretendard'", "sans-serif"],
+                "serif": ["'Newsreader'", "serif"],
               },
-              borderRadius: {"lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+              boxShadow: {
+                'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+              },
+              animation: {
+                'fade-in': 'fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                'float': 'float 6s ease-in-out infinite',
+              },
+              keyframes: {
+                fadeIn: {
+                  '0%': { opacity: 0, transform: 'translateY(10px)' },
+                  '100%': { opacity: 1, transform: 'translateY(0)' },
+                },
+                float: {
+                  '0%, 100%': { transform: 'translateY(0)' },
+                  '50%': { transform: 'translateY(-10px)' },
+                }
+              }
             },
           },
         }
         </script>
         <style>
           body { 
-            font-family: 'Spline Sans', sans-serif;
-            min-height: 100dvh; 
+            font-family: 'Pretendard', sans-serif; 
+            min-height: 100dvh;
+            -webkit-tap-highlight-color: transparent;
+          }
+          .font-serif {
+            font-family: 'Newsreader', serif;
           }
           .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
           }
-          /* Hide scrollbar for Chrome, Safari and Opera */
-          *::-webkit-scrollbar {
-            display: none;
+          /* Hide scrollbar */
+          *::-webkit-scrollbar { display: none; }
+          * { -ms-overflow-style: none; scrollbar-width: none; }
+          
+          /* Glassmorphism utilities classes */
+          .glass-nav {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
           }
-          /* Hide scrollbar for IE, Edge and Firefox */
-          * {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+          .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.75);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+          }
+          .page-transition {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           }
         </style>
     </head>
-    <body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         <!-- PWA Install Banner -->
         <div id="pwa-install-banner" class="hidden fixed top-0 left-0 right-0 z-50 bg-primary text-white shadow-lg">
             <div class="max-w-md mx-auto p-4 flex items-center justify-between">
@@ -1050,10 +1218,10 @@ app.get('/settings', (c) => {
             </div>
         </div>
 
-        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-white dark:bg-slate-900">
+        <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
             <!-- Header -->
-            <header class="sticky top-0 z-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 py-4">
-                <h1 class="text-xl font-semibold">Settings</h1>
+            <header class="sticky top-0 z-20 bg-transparent pt-6 flex items-center justify-between px-4 py-4">
+                <h1 class="text-2xl font-serif font-medium tracking-tight">Settings</h1>
                 <button class="p-2 rounded-full bg-slate-100 dark:bg-slate-800">
                     <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1">person</span>
                 </button>
@@ -1141,31 +1309,29 @@ app.get('/settings', (c) => {
             </main>
 
             <!-- Bottom Navigation -->
-            <nav class="sticky bottom-0 z-10 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 py-3">
-                <div class="w-full flex justify-between items-center max-w-md mx-auto">
-                    <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/">
-                        <span class="material-symbols-outlined">home</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide">Home</span>
-                    </a>
-                    <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/calendar">
-                        <span class="material-symbols-outlined">calendar_month</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide">Calendar</span>
-                    </a>
-                    <div class="relative -top-6">
-                        <button onclick="window.location.href='/write'" class="bg-primary text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/30 ring-4 ring-white dark:ring-slate-900 hover:opacity-90 transition-opacity">
-                            <span class="material-symbols-outlined text-3xl">add</span>
-                        </button>
-                    </div>
-                    <a class="flex flex-col items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors" href="/timeline">
-                        <span class="material-symbols-outlined">history</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide">Timeline</span>
-                    </a>
-                    <a class="flex flex-col items-center gap-1 text-primary transition-colors" href="/settings">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">settings</span>
-                        <span class="text-[10px] font-medium uppercase tracking-wide border-b-2 border-primary">Settings</span>
-                    </a>
+            
+        <!-- Floating Bottom Navigation Bar -->
+        <div class="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+            <nav class="pointer-events-auto flex justify-between items-center w-full max-w-sm glass-nav rounded-[2rem] px-6 py-3 shadow-glass dark:shadow-glass-dark transition-all duration-300">
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/">
+                    <span class="material-symbols-outlined text-[26px]">home</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/calendar">
+                    <span class="material-symbols-outlined text-[26px]">calendar_month</span>
+                </a>
+                <div class="relative -top-6 transform hover:scale-105 transition-transform">
+                    <button onclick="window.location.href='/write'" class="bg-primary hover:bg-indigo-500 text-white size-14 rounded-full flex items-center justify-center shadow-lg shadow-primary/40 ring-[6px] ring-white/50 dark:ring-slate-900/50 transition-all duration-300">
+                        <span class="material-symbols-outlined text-3xl">add</span>
+                    </button>
                 </div>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors " href="/timeline">
+                    <span class="material-symbols-outlined text-[26px]">history</span>
+                </a>
+                <a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary dark:hover:text-indigo-400 transition-colors text-primary dark:text-indigo-400" href="/settings">
+                    <span class="material-symbols-outlined text-[26px]">tune</span>
+                </a>
             </nav>
+        </div>
         </div>
 
         
