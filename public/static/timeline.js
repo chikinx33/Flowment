@@ -81,18 +81,6 @@
       showEmptyState();
       return;
     }
-    
-    // Emotion emoji mapping
-    const emotionEmojis = {
-      'joy': '😊',
-      'sadness': '😢',
-      'anger': '😡',
-      'fear': '😨',
-      'surprise': '😲',
-      'disgust': '🤢',
-      'neutral': '😐'
-    };
-    
     // Generate timeline HTML
     let timelineHTML = '<div class="relative w-full py-8">';
     timelineHTML += '<div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-indigo-500/20 to-transparent -translate-x-1/2"></div>';

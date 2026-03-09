@@ -65,28 +65,6 @@
   }
   
   function renderCalendar(year, month, entries, keywords) {
-    // Emotion emoji mapping
-    const emotionEmojis = {
-      'joy': '😊',
-      'sadness': '😢',
-      'anger': '😡',
-      'fear': '😨',
-      'surprise': '😲',
-      'disgust': '🤢',
-      'neutral': '😐'
-    };
-    
-    // Emotion color mapping
-    const emotionColors = {
-      'joy': 'bg-green-500/80',
-      'sadness': 'bg-blue-500/80',
-      'anger': 'bg-red-500/80',
-      'fear': 'bg-purple-500/80',
-      'surprise': 'bg-yellow-500/80',
-      'disgust': 'bg-orange-500/80',
-      'neutral': 'bg-gray-500/80'
-    };
-    
     // Create entries map by date (V2.0: entry_date)
     const entriesMap = {};
     entries.forEach(entry => {
