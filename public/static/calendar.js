@@ -131,33 +131,6 @@
           `}
         </section>
         
-        <!-- Featured Entry -->
-        ${entries.length > 0 ? `
-          <section class="mt-4 p-8 rounded-[2.5rem] bg-indigo-50 dark:bg-indigo-500/5 border border-indigo-100 dark:border-indigo-500/10 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-600/5 rounded-full blur-3xl group-hover:bg-indigo-600/10 transition-colors duration-500"></div>
-            
-            <div class="relative z-10">
-              <div class="flex flex-col gap-1 mb-6">
-                <span class="text-[10px] text-indigo-500 dark:text-indigo-400 tracking-[0.2em] uppercase font-semibold">Latest Entry</span>
-                <span class="text-sm text-slate-500 font-medium">${new Date(entries[0].entry_date || entries[0].date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</span>
-              </div>
-              
-              <p class="text-slate-800 dark:text-slate-200 leading-relaxed text-lg font-serif italic mb-6">
-                "${truncateText(entries[0].content, 100)}"
-              </p>
-              
-              <div class="flex items-center justify-between">
-                <div class="flex flex-wrap gap-2">
-                  ${(entries[0].keywords || []).slice(0,2).map(kw => `<span class="inline-block bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-[11px] font-medium tracking-wide">#${kw}</span>`).join('')}
-                </div>
-                
-                <button onclick="window.location.href='/timeline'" class="size-10 flex items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 hover:scale-110 transition-transform">
-                  <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </button>
-              </div>
-            </div>
-          </section>
-        ` : ``}
       </div>
     `;
     

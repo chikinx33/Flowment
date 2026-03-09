@@ -1065,13 +1065,7 @@ app.get('/calendar', (c) => {
         </div>
 
         <div class="w-full max-w-md mx-auto min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
-            <header class="sticky top-0 z-20 bg-transparent pt-6 flex items-center justify-between px-4 py-4">
-                <button onclick="window.location.href='/'" class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                </button>
-                <h1 class="text-2xl font-serif font-medium tracking-tight">Calendar</h1>
-                <div class="w-10"></div>
-            </header>
+            <header class="sticky top-0 z-20 bg-transparent pt-6 px-4 py-4"></header>
 
             <main class="flex-1 px-4 py-6" id="calendar-content">
                 <div class="text-center py-12">
